@@ -50,7 +50,6 @@ class CountWildcardFunc:
     alias_name: str = None
 
 
-
 class Query:
     def __init__(
             self,
@@ -358,7 +357,7 @@ class InsertQuery(VoidQuery):
         collection = tok.get_name()
         if collection not in self.connection_properties.cached_collections:
             if self.connection_properties.enforce_schema:
-                raise MigrationError(collection)
+                raise MigrationError(f'Table {collection} does not exist in database')
             self.connection_properties.cached_collections.add(collection)
 
         self.left_table = collection
@@ -643,7 +642,7 @@ class AlterQuery(VoidQuery):
                 pass
             elif tok.match(tokens.Name.Builtin, (
                 'integer', 'bool', 'char', 'date', 'boolean',
-                'datetime', 'float', 'time', 'number'
+                'datetime', 'float', 'time', 'number', 'string'
             )):
                 pass
             elif isinstance(tok, Identifier):
@@ -658,6 +657,8 @@ class AlterQuery(VoidQuery):
                 i = SQLToken.placeholder_index(tok)
                 self._default = self.params[i]
             elif tok.match(tokens.Keyword, 'UNIQUE'):
+                if self.execute == self._add_column:
+                    self.field_dir = [(self._iden_name, 1)]
                 self.execute = self._unique
             elif tok.match(tokens.Keyword, 'INDEX'):
                 self.execute = self._index
@@ -687,6 +688,7 @@ class AlterQuery(VoidQuery):
             },
             multi=True
         )
+
     def _index(self):
         self.db_ref[self.left_table].create_index(
             self.field_dir,
