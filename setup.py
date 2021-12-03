@@ -80,12 +80,6 @@ def find_version(*file_paths):
     raise RuntimeError("Unable to find version string.")
 
 
-install_requires = [
-    'sqlparse==0.2.4',
-    'pymongo>=3.2.0',
-    'django>=2.1',
-]
-
 if sys.version_info.major == 3 and sys.version_info.minor < 7:
     install_requires.append("dataclasses")
 
@@ -100,7 +94,12 @@ setup(
     author_email='nesdis@gmail.com',
     description=(
         'Driver for allowing Django to use MongoDB as the database backend.'),
-    install_requires=install_requires,
+    install_requires=[
+        'sqlparse==0.2.4',
+        'pymongo>=3.2.0, <4.0',
+        'django>=2.0',
+        'dataclasses>=0.1',
+    ],
     extras_require=dict(
         json=[
             'jsonfield>=2.0.2',
