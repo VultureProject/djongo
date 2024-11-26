@@ -3,7 +3,7 @@ build-backend = "setuptools.build_meta"
 requires = ["setuptools"]
 
 [project]
-dynamic = ["version", "optional-dependencies"]
+dynamic = ["version"]
 name = "djongo"
 dependencies = [
     'sqlparse==0.4.4',
@@ -24,6 +24,11 @@ classifiers = [
 ]
 description = "Djongo: The Django MongoDB connector"
 readme = "README.md"
+[project.optional-dependencies]
+json = [
+  "jsonfield>=2.0.2",
+  "django-jsoneditor>=0.0.12",
+]
 [project.urls]
 Homepage = "https://www.djongomapper.com/"
 Documentation = "https://www.djongomapper.com/docs/"
