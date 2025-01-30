@@ -85,6 +85,8 @@ class MongoField(Field):
 
 class JSONField(MongoField):
     def get_prep_value(self, value):
+        if value is None:
+            value = dict()
         if not isinstance(value, (dict, list)):
             raise ValueError(
                 f'Value: {value} must be of type dict/list'
