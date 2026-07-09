@@ -9,7 +9,7 @@ clients = {}
 
 def connect(db, **kwargs):
     logger.debug('New MongoClient connection')
-    clients[db] = MongoClient(**kwargs, connect=False)
+    clients[db] = MongoClient(**kwargs, connect=True)
     return clients[db]
 
 
